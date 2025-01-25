@@ -22,13 +22,12 @@ func DetectSingleCharXOR(fName string) ([]byte, byte, error) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-		stringFound, key, err := SingleByteXORCypher(line)
+		decyphered, key, err := SingleByteXORCypher(line)
 
 		utils.HandleErr(err)
 
-		if stringFound != nil {
-			return stringFound, key, nil
-
+		if decyphered != nil {
+			return decyphered, key, nil
 		}
 	}
 
