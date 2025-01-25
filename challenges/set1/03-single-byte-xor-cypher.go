@@ -10,8 +10,9 @@ import (
 var FrequentChars []string = []string{"e", "t", "a", "o", "i", "n", "s", "h", "r", "d", "l", "u"}
 
 /*
-Decrypts a message (hex string); Finds a single character (key) against which a hex string has been XOR'd
+	Decrypts a message (hex string); Finds a single character (key) against which a hex string has been XOR'd
 */
+
 func SingleByteXORCypher(hex string) ([]byte, byte, error) {
 	hexToBytes, err := DecodeHexString(hex)
 	utils.HandleErr(err)
