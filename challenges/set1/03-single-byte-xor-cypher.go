@@ -34,8 +34,8 @@ func SingleByteXORCypher(hex string) ([]byte, byte, error) {
 			for _, b := range hexToBytes {
 				result = append(result, byte(key)^b)
 			}
-			if !strings.ContainsAny(string(result), "`@#$%^&*()_+=></~[|{}]") {
-				fmt.Println("string before XOR: ", string(result), "\nXOR key: ", string(key))
+			if !strings.ContainsAny(string(result), "`@#$%^&*()_+=></~[|{}]�") {
+				fmt.Println("string before XOR: ", string(result), "\bXOR key: ", string(key))
 				return result, key, nil
 			}
 		}
