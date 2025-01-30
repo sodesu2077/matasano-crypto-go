@@ -17,7 +17,7 @@ func RepeatingKeyXOR(key string, text string) ([]byte, error) {
 
 	for i := 0; i < len(text); i++ {
 		cypheredBytes[i] = byte(text[i]) ^ byte(key[counter])
-		if counter == 2 {
+		if counter == len(key)-1 {
 			counter = 0
 		} else {
 			counter++
