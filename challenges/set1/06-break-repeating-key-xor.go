@@ -2,7 +2,6 @@ package set1
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 
@@ -25,75 +24,34 @@ func BreakRepeatingKeyXOR(fname string) []byte {
 		}
 	}
 
-	bytes, err := DecodeBase64IntoBinary(string(text))
+	bytes, err := utils.Base64ToBytes(string(text))
 	utils.HandleErr(err)
 
 	for KEYSIZE := 2; KEYSIZE <= 40; KEYSIZE++ {
 		avg := DistanceAverage(bytes, KEYSIZE)
 		if avg <= 1 {
-			keySizePointer := 0
+			ptr := 0
 			KEY := make([]byte, KEYSIZE)
 
-			for keySizePointer < KEYSIZE {
+			for ptr < KEYSIZE {
 				block := make([]byte, len(bytes)/KEYSIZE)
 				index := 0
-				for j := keySizePointer; j < len(bytes)-KEYSIZE-1; j += KEYSIZE {
+				for j := ptr; j < len(bytes)-KEYSIZE-1; j += KEYSIZE {
 					block[index] = bytes[j]
 					index++
 				}
-				data, key, _ := FindSingleByteXOR(block)
+				data, k, _ := FindSingleByteXOR(block)
 				if data != nil {
-					KEY[keySizePointer] = key
+					KEY[ptr] = k
 				}
-				keySizePointer++
+				ptr++
 			}
 			if KEY[0] != 0 {
-				fmt.Println(string(KEY))
 				return KEY
 			}
 		}
 	}
 	return nil
-}
-
-func DistanceAverage(bytes []byte, KEYSIZE int) int {
-	distances := make([]int, 5)
-	for d := 1; d < len(distances); d++ {
-		a := (d - 1) * KEYSIZE
-		b := d * KEYSIZE
-		c := (d + 1) * KEYSIZE
-		distances[d] = int(FindHammingDistance(bytes[a:b], bytes[b:c])) / KEYSIZE
-	}
-	sum := 0
-	for _, v := range distances {
-		sum += v
-	}
-	return sum / len(distances)
-}
-
-func DecodeBase64IntoBinary(text string) ([]byte, error) {
-	base64Table := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-	decodeTable := make(map[rune]int)
-	for i, c := range base64Table {
-		decodeTable[c] = i
-	}
-
-	bytes := make([]byte, len(text)*6/8)
-	var buffer uint32
-	var bitCount int
-	var index int
-
-	for _, v := range text {
-		buffer = (buffer << 6) | uint32(decodeTable[v])
-		bitCount += 6
-
-		for bitCount >= 8 {
-			bytes[index] = byte(buffer >> (bitCount - 8))
-			index++
-			bitCount -= 8
-		}
-	}
-	return bytes, nil
 }
 
 /*
@@ -122,4 +80,19 @@ func FindHammingDistance(val1, val2 []byte) byte {
 		}
 	}
 	return byte(count)
+}
+
+func DistanceAverage(bytes []byte, KEYSIZE int) int {
+	distances := make([]int, 5)
+	for d := 1; d < len(distances); d++ {
+		a := (d - 1) * KEYSIZE
+		b := d * KEYSIZE
+		c := (d + 1) * KEYSIZE
+		distances[d] = int(FindHammingDistance(bytes[a:b], bytes[b:c])) / KEYSIZE
+	}
+	sum := 0
+	for _, v := range distances {
+		sum += v
+	}
+	return sum / len(distances)
 }
