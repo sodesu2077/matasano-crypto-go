@@ -24,7 +24,7 @@ func RepeatingKeyXOR(key string, text string) ([]byte, error) {
 		}
 	}
 
-	hex, _ := utils.ConvertBytesIntoBase16(cypheredBytes)
+	hex, _ := utils.BytestoBase16(cypheredBytes)
 	fmt.Println(hex)
 
 	return cypheredBytes, nil
