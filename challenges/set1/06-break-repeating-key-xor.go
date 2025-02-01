@@ -27,12 +27,14 @@ func BreakRepeatingKeyXOR(fname string) []byte {
 	bytes, err := utils.Base64ToBytes(string(text))
 	utils.HandleErr(err)
 
+	// Find KEYSIZE with the lowest edit distance
 	for KEYSIZE := 2; KEYSIZE <= 40; KEYSIZE++ {
 		avg := DistanceAverage(bytes, KEYSIZE)
 		if avg <= 1 {
 			ptr := 0
 			KEY := make([]byte, KEYSIZE)
 
+			// Transpose blocks and find a single xor key for each of the blocks
 			for ptr < KEYSIZE {
 				block := make([]byte, len(bytes)/KEYSIZE)
 				index := 0
