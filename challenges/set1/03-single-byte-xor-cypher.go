@@ -1,7 +1,6 @@
 package set1
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 
@@ -19,7 +18,6 @@ func SingleByteXORCypher(hex string) ([]byte, byte, error) {
 	utils.HandleErr(err)
 
 	data, key, err := FindSingleByteXOR(hexToBytes)
-	fmt.Println("string before XOR: ", string(data), "\bXOR key: ", string(key))
 	return data, key, err
 }
 
