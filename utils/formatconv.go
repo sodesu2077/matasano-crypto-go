@@ -12,11 +12,11 @@ func BytestoBase16(bytes []byte) (string, error) {
 	return hex, nil
 }
 
-func Base64ToBytes(text string) ([]byte, error) {
+func Base64ToBytes(text []byte) ([]byte, error) {
 	base64Table := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-	decodeTable := make(map[rune]int)
+	decodeTable := make(map[byte]int)
 	for i, c := range base64Table {
-		decodeTable[c] = i
+		decodeTable[byte(c)] = i
 	}
 
 	bytes := make([]byte, len(text)*6/8)
