@@ -1,6 +1,7 @@
 package set1
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/sodesu2077/matasano-crypto-go/utils"
@@ -28,7 +29,7 @@ func TestSingleByteXORCypher(t *testing.T) {
 }
 
 func TestDetectSingleCharXOR(t *testing.T) {
-	result, _, _ := DetectSingleCharXOR("../../static/data/set1.04.txt")
+	result, _, _ := DetectSingleCharXOR("../../assets/data/set1.04.txt")
 	if string(result) != "Now that the party is jumping\n" {
 		t.Fatal("Can't detect single char XOR")
 	}
@@ -43,8 +44,22 @@ func TestRepeatingKeyXOR(t *testing.T) {
 }
 
 func TestBreakRepeatingKeyXOR(t *testing.T) {
-	result := BreakRepeatingKeyXOR("../../static/data/set1.06.txt")
+	result := BreakRepeatingKeyXOR("../../assets/data/set1.06.txt")
 	if string(result) != "Terminator X: Bring the noise" {
 		t.Fatal("Can't break repeating key XOR")
+	}
+}
+
+func TestDecryptAES(t *testing.T) {
+	result := DecryptAES("../../assets/data/set1.07.txt", []byte("YELLOW SUBMARINE"))
+	if !strings.Contains(string(result), "I'm back and I'm ringin' the bell") {
+		t.Fatal("Can't decrypt AES in ECB mode")
+	}
+}
+
+func TestDetectAES(t *testing.T) {
+	result := DetectAES("../../assets/data/set1.08.txt")
+	if !strings.Contains(string(result), "d880619740a8a19b7840a8a31c810a3d") {
+		t.Fatal("Can't detect AES in ECB mode")
 	}
 }
