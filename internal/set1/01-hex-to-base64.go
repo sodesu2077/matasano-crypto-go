@@ -4,9 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+
+	"github.com/sodesu2077/matasano-crypto-go/utils"
 )
 
-const base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 func DecodeHexString(hex string) ([]byte, error) {
 	strlen := len(hex)
@@ -33,46 +34,7 @@ func DecodeHexString(hex string) ([]byte, error) {
 	return data, nil
 }
 
-func EncodeBinaryToBase64(data []byte) (string, error) {
-	/*
-		Converting bytes to base64
-		1. Iterate through the data slice
-		2. Shift the buffer 8 bits to the left and add the new byte
-		3. Increment the bit count by 8
-		4. Process 6-bit chunks
-			- Extract the last 6 bits from the buffer
-			- Append the corresponding base64 character to the result
-		5. Handle remaining bits (if any)
-			- Pad the remaining bits with zeroes
-			- Append the corresponding base64 character to the result
-	*/
 
-	var result string
-	var buffer uint32
-	var bitCount int
-
-	for _, b := range data {
-		buffer = (buffer << 8) | uint32(b)
-		bitCount += 8
-
-		for bitCount >= 6 {
-			bitCount -= 6
-			index := (buffer >> bitCount) & 0x3F
-			result += string(base64Table[index])
-		}
-	}
-
-	if bitCount > 0 {
-		buffer <<= (6 - bitCount)
-		result += string(base64Table[buffer&0x3F])
-	}
-
-	for len(result)%4 != 0 {
-		result += "="
-	}
-
-	return result, nil
-}
 
 func HexToBase64(hex string) (string, error) {
 	strlen := len(hex)
@@ -85,7 +47,7 @@ func HexToBase64(hex string) (string, error) {
 		return "", err
 	}
 
-	result, err := EncodeBinaryToBase64(data)
+	result, _ := utils.BytesToBase64(data)
 
 	fmt.Println(result)
 	return result, nil
