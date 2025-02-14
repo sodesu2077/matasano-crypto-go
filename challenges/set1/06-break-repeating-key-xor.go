@@ -24,7 +24,7 @@ func BreakRepeatingKeyXOR(fname string) []byte {
 		}
 	}
 
-	bytes, err := utils.Base64ToBytes(string(text))
+	bytes, err := utils.Base64ToBytes(text)
 	utils.HandleErr(err)
 
 	// Find KEYSIZE with the lowest edit distance
